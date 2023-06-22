@@ -3,7 +3,8 @@ optional_view is a C++ library for non-owning optional data, compatible with mul
 
 ## Rationale
 
-What is an `optional_view<T>`: a non-owning reference to some existing type T, or empty (nullopt)
+What is an `optional_view<T>`: a non-owning reference to some existing type T, or empty (nullopt).
+In other words, it is **immutably tied** to some reference `T&` or empty.
 
 This is useful in situations where you may pass or not some variable,
 typically resolved with `T*`. 
@@ -27,12 +28,21 @@ It is unclear (at least to me), if `optional<T&>` takes ownership on the data.
 2. Binding and rebinding: `optional_view<T>` avoids the rebind issue associated with references by accepting the object by value and providing a view-like interface. It eliminates the need for rebinding references when passing objects to the container.
 On `optional<T&>` this behavior is not clear ([see discussions](https://herbsutter.com/2020/02/23/references-simply/))
 
-3. Mutability: `optional_view<T>` implementation can be designed to allow modifications to the underlying object if it is non-const. This behavior is similar on `optional<T>`, by its nature.
-Maybe, non-constness could be removed and some specific `optional_mutable_view<T>` be created...
+3. Mutability: `optional_view<T>` is immutably tied to some reference (or empty), 
+but it can also allow modifications to the underlying object if it is non-const. 
+This behavior is similar on `optional<T>`, by its nature, 
+but as `optional<T&>` implementations typically rebind on practice (see discussions above),
+it cannot be considered immutable.
+Maybe, non-constness of `optional_view<T>` could be removed and some specific `optional_mutable_view<T>` be created...
 it is debatable.
-For now, `optional_view<const T>` explicitly represents immutability.
+For now, one can use `optional_view<const T>` to explicitly represent immutability of referenced/underlying data.
 
 4. Nullability: Both implementations support the notion of an optional value, as `std::nullopt`.
+
+5. Compatibility with other types: `optional_view<T>` can be used to access many types (as many as `T*` supports), such as:
+`T&`, `optional<T>`, `unique_ptr<T>`, ... Note that binding to `T*` is explicitly forbidden, to not encourage raw pointer usage.
+On the other hand, `optional<T>` implies some specific memory handling mechanism, 
+as it is not clear which memory model applies to `optional<T&>`. 
 
 
 ### Demo

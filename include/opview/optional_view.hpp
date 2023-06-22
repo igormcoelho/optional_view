@@ -2,7 +2,8 @@
 // Copyright (C) 2023 - optional_view
 // https://github.com/igormcoelho/optional_view
 
-#pragma once
+#ifndef OPVIEW_OPTIONAL_VIEW_HPP_
+#define OPVIEW_OPTIONAL_VIEW_HPP_
 
 // #define OPTIONAL_VIEW_EXTENSIONS 1
 
@@ -127,3 +128,5 @@ class optional_view {
 };
 
 }  // namespace opview
+
+#endif  // OPVIEW_OPTIONAL_VIEW_HPP_

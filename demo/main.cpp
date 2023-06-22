@@ -49,11 +49,13 @@ int main() {
   //
   // optional_view<int> ow{oz};  // ERROR: ‘const int’ to ‘int&’
   //
+  // Check if reset() extension is available
+#ifdef OPTIONAL_VIEW_EXTENSIONS
   *op_y = 90;
   op_y.reset();                          // disengage the optional
   std::cout << (bool)op_y << std::endl;  // prints 0 (FALSE)
   std::cout << *op_y << std::endl;       // BROKEN? prints 90 (?)
   std::cout << *oz << std::endl;         // BROKEN? prints 90 (?)
-
+#endif
   return 0;
 }

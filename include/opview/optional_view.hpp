@@ -4,6 +4,8 @@
 
 #pragma once
 
+// #define OPTIONAL_VIEW_EXTENSIONS 1
+
 // ====================================================================
 // Optional View (optional_view::optional_view) - Likely C++11 or C++17 (for
 // nullopt) Author: Igor M. Coelho MIT License (2023)
@@ -119,7 +121,9 @@ class optional_view {
   // has some view?
   operator bool() { return (bool)value; }
 
+#ifdef OPTIONAL_VIEW_EXTENSIONS
   void reset() noexcept { value = nullptr; }
+#endif
 };
 
 }  // namespace opview

@@ -44,6 +44,33 @@ For now, one can use `optional_view<const T>` to explicitly represent immutabili
 On the other hand, `optional<T>` implies some specific memory handling mechanism, 
 as it is not clear which memory model applies to `optional<T&>`. 
 
+### Extensions
+
+#### Reset extension
+A method `reset()` is considered an extension of `optional_view`, in the same way that
+`string_view` does not have a `reset()` or `clear()` method 
+(better demonstrating its immutability and non-owning behavior).
+
+However, if one may get to a situation where a `reset()` function is useful for `optional_view`,
+ please let me know!
+
+#### Lifetime extension and move constructor
+
+By default, there is no move constructor on `optional_view`. 
+This limits situations where some rvalue `int` could be directly passed into a function,
+which is accepted in C++ as a `const int&` in a behavior known as "lifetime extension".
+So, `optional_view` will reject this situation for three reasons: 
+
+- (i) lifetime extension is typically a compiler feature 
+- (ii) `optional_view` aims to be compatible with `string_view`, known to not need move semantics
+- (iii) if it takes temporary ownership of the resource, then it needs to clear that data afterwards, which is doable... however, its copy behavior will be affected afterwards, as
+this resource could be cleared in one `optional_view`, thus breaking another
+
+So, possible extensions are: 
+
+- (i) create `optional_unique_view`, that disables copy behavior and focuses on move-only semantics (just as `unique_ptr`)
+- (ii) create `optional_shared_view`, that allows both copy and move semantics, thus storing
+a `shared_ptr` to the underlying data only in cases where ownership is needed for "lifetime extension"
 
 ### Demo
 
@@ -94,11 +121,14 @@ int main() {
   //
   // optional_view<int> ow{oz};  // ERROR: ‘const int’ to ‘int&’
   //
+  // Check if reset() extension is available
+#ifdef OPTIONAL_VIEW_EXTENSIONS
   *op_y = 90;
   op_y.reset();                          // disengage the optional
   std::cout << (bool)op_y << std::endl;  // prints 0 (FALSE)
   std::cout << *op_y << std::endl;       // BROKEN? prints 90 (?)
   std::cout << *oz << std::endl;         // BROKEN? prints 90 (?)
+#endif
 
   return 0;
 }
@@ -111,6 +141,11 @@ Just copy the header located at [include/opview/optional_view.hpp](include/opvie
 Remember that C++17 is required, due to `std::optional` compatibility.
 
 Have fun!
+
+### Acknowledgements
+
+Thanks Fellipe Pessanha for fruitful discussions on reset extension,
+and to the C++ community for discussions on optional references.
 
 ## License
 

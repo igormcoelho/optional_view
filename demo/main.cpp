@@ -5,6 +5,7 @@
 // demo for optional view
 
 #include <iostream>
+#include <memory>
 #include <opview/optional_view.hpp>
 
 using opview::optional_view;
@@ -18,10 +19,14 @@ void f(optional_view<int> maybe_int) {
 
 int main() {
   int x = 10;
+  f(x);  // prints 10
+  //
   optional_view<int> ox{x};
   f(ox);            // prints 10
   f(std::nullopt);  // prints "empty"
   // f(10);         // ERROR: no move semantics (non-ownership)
+  auto z = std::make_unique<int>(5);
+  f(*z);  // OK: prints 5
   //
   std::optional<int> op_y{20};  // OK for std::optional...
   f(op_y);                      // compatible: prints 20

@@ -6,11 +6,20 @@
 
 #include <iostream>
 #include <memory>
+#include <opview/optional_unique_view.hpp>
 #include <opview/optional_view.hpp>
 
+using opview::optional_unique_view;
 using opview::optional_view;
 
 void f(optional_view<int> maybe_int) {
+  if (maybe_int)
+    std::cout << *maybe_int << std::endl;
+  else
+    std::cout << "empty" << std::endl;
+}
+
+void g(optional_unique_view<int> maybe_int) {
   if (maybe_int)
     std::cout << *maybe_int << std::endl;
   else
@@ -57,5 +66,16 @@ int main() {
   std::cout << *op_y << std::endl;       // BROKEN? prints 90 (?)
   std::cout << *oz << std::endl;         // BROKEN? prints 90 (?)
 #endif
+  std::cout << "BEGIN UNIQUE PART" << std::endl;
+  int x2 = 10;
+  g(x2);  // prints 10
+  //
+  optional_unique_view<int> ox2{x2};
+  std::cout << (bool)ox2 << std::endl;  // OK: true
+  // g(ox2);                            // ERROR: no copy
+  g(std::move(ox2));                    // OK: prints 10
+  std::cout << (bool)ox2 << std::endl;  // OK: false
+  g(std::nullopt);                      // prints "empty"
+  g(10);                                // OK: prints 10
   return 0;
 }

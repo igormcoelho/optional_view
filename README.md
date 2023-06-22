@@ -68,7 +68,7 @@ this resource could be cleared in one `optional_view`, thus breaking another
 
 So, possible extensions are: 
 
-- (i) create `optional_unique_view`, that disables copy behavior and focuses on move-only semantics (just as `unique_ptr`)
+- (i) `optional_unique_view`, that disables copy behavior and focuses on move-only semantics (just as `unique_ptr`) - see [include/opview/optional_unique_view.hpp](include/opview/optional_unique_view.hpp)
 - (ii) create `optional_shared_view`, that allows both copy and move semantics, thus storing
 a `shared_ptr` to the underlying data only in cases where ownership is needed for "lifetime extension"
 

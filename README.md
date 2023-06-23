@@ -1,6 +1,8 @@
 # optional_view
 optional_view is a C++ library for non-owning optional data, compatible with multiple allocation types (stack, heap, etc) 
 
+Read more on ["Using optional_view to manage optional references in C++"](https://igormcoelho.medium.com/using-optional-view-to-manage-optional-references-in-c-1368abea30bb).
+
 ## Rationale
 
 What is an `optional_view<T>`: a non-owning reference to some existing type T, or empty (nullopt).

@@ -3,6 +3,9 @@ optional_view is a C++ library for non-owning optional data, compatible with mul
 
 Read more on ["Using optional_view to manage optional references in C++"](https://igormcoelho.medium.com/using-optional-view-to-manage-optional-references-in-c-1368abea30bb).
 
+**In short**: this is **an immutable view to an optional type with underlying data T**, where `T` can be mutable or not, as in `T* const` (do confuse with `const T*`). 
+So, `optional_view<T>` represents an immutable optional view to a mutable reference to T (like `T&`), while `optional_view<const T>` represents an immutable optional view to a const reference to T (like `const T&`).
+
 ## Rationale
 
 What is an `optional_view<T>`: a non-owning reference to some existing type T, or empty (nullopt).

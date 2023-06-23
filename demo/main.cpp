@@ -4,11 +4,14 @@
 
 // demo for optional view
 
+// #define OPTIONAL_VIEW_EXTENSIONS
+
 #include <iostream>
 #include <memory>
 #include <opview/optional_unique_view.hpp>
 #include <opview/optional_view.hpp>
 
+using opview::const_optional_view;
 using opview::optional_unique_view;
 using opview::optional_view;
 

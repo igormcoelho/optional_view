@@ -34,12 +34,15 @@
 namespace opview {
 //
 template <typename T>
-class optional_view {
+class optional_view {  // NOLINT
   using value_type = T;
 
  private:
-  T* value;
-  // OR... optional<T*>... BUT NO NEED OR THAT!
+#ifdef OPTIONAL_VIEW_EXTENSIONS
+  T* value;  // this allows reset() to make this nullptr
+#else
+  T* const value;  // no reset() method
+#endif
 
  public:
   optional_view() : value{nullptr} {}
@@ -126,6 +129,9 @@ class optional_view {
   void reset() noexcept { value = nullptr; }
 #endif
 };
+
+template <typename T>
+using const_optional_view = optional_view<const T>;
 
 }  // namespace opview
 

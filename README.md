@@ -4,7 +4,7 @@ optional_view is a C++ library for non-owning optional data, compatible with mul
 Read more on ["Using optional_view to manage optional references in C++"](https://igormcoelho.medium.com/using-optional-view-to-manage-optional-references-in-c-1368abea30bb).
 
 **In short**: this is **an immutable view to an optional type with underlying data T**, where `T` can be mutable or not, as in `T* const` (do confuse with `const T*`). 
-So, `optional_view<T>` represents an immutable optional view to a mutable reference to T (like `T&`), while `optional_view<const T>` represents an immutable optional view to a const reference to T (like `const T&`).
+So, `optional_view<T>` represents an immutable optional view to a mutable reference to T (like `T&`), while `optional_view<const T>` (or simply `const_optional_view<T>`) represents an immutable optional view to a const reference to T (like `const T&`).
 
 ## Rationale
 
@@ -70,6 +70,11 @@ So, `optional_view` will reject this situation for three reasons:
 - (ii) `optional_view` aims to be compatible with `string_view`, known to not need move semantics
 - (iii) if it takes temporary ownership of the resource, then it needs to clear that data afterwards, which is doable... however, its copy behavior will be affected afterwards, as
 this resource could be cleared in one `optional_view`, thus breaking another
+
+#### Extensions
+
+If one wants to have immutability on optional, so as constness in underlying type, one may use
+`const_optional_view<T>`, which is the same as `optional_view<const T>` (similar to the weird `const T* const`).
 
 So, possible extensions are: 
 
